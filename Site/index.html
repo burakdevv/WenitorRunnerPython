@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080a16">
+  <meta name="description" content="Wenitor Runner Python — Windows için şık Python geliştirme ortamı.">
+  <title>Wenitor Runner Python — Kodla. Çalıştır. Üret.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{color-scheme:dark;--bg:#080a16;--panel:#111427;--text:#f6f7ff;--muted:#a2a8c2;--cyan:#19d5ff;--blue:#536dff;--violet:#b742ff;--line:#ffffff18}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#202963 0,transparent 46%),var(--bg);color:var(--text);font-family:"DM Sans",sans-serif;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}button{font:inherit}.wrap{width:min(1160px,calc(100% - 40px));margin:auto}
+    .grain{position:fixed;inset:0;z-index:-1;opacity:.12;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.2'/%3E%3C/svg%3E")}
+    .nav{height:82px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
+    .brand{display:flex;gap:12px;align-items:center;font:700 19px "Space Grotesk",sans-serif;letter-spacing:-.5px}.brand img{width:43px;height:43px;border-radius:13px;object-fit:cover}
+    .navlinks{display:flex;gap:30px;color:#c5c9da;font-size:14px}.navlinks a:hover{color:var(--cyan)}.nav-cta{border:1px solid #ffffff28;padding:11px 17px;border-radius:12px;font-size:13px;background:#ffffff08}
+    .hero{min-height:670px;display:grid;grid-template-columns:1.03fr .97fr;align-items:center;gap:40px;padding:76px 0 94px;position:relative}
+    .hero:before{content:"";position:absolute;width:500px;height:500px;border-radius:50%;background:#4726ff36;filter:blur(100px);right:4%;top:12%;z-index:-1;animation:breathe 7s ease-in-out infinite}
+    .eyebrow{display:inline-flex;align-items:center;gap:9px;color:#b8c9ff;background:#758aff18;border:1px solid #8394ff40;border-radius:999px;padding:9px 13px;font-size:12px;font-weight:700;letter-spacing:.7px;text-transform:uppercase}
+    .pulse{width:7px;height:7px;border-radius:50%;background:#43f2c7;box-shadow:0 0 12px #43f2c7;animation:blink 1.7s infinite}
+    h1{font:700 clamp(48px,6.3vw,78px)/.99 "Space Grotesk",sans-serif;letter-spacing:-5px;margin:27px 0 22px}h1 span{display:block;background:linear-gradient(100deg,#fff 5%,#b4c4ff 43%,#69dbff 68%,#d16dff 98%);background-clip:text;color:transparent}
+    .lead{font-size:17px;line-height:1.8;color:#adb3cb;max-width:550px;margin:0 0 30px}.actions{display:flex;gap:13px;flex-wrap:wrap}
+    .btn{display:inline-flex;justify-content:center;align-items:center;gap:10px;border-radius:14px;padding:15px 21px;font-weight:700;font-size:14px;transition:transform .25s,box-shadow .25s,border-color .25s;cursor:pointer}
+    .btn:hover{transform:translateY(-3px)}.primary{color:white;background:linear-gradient(110deg,#168fee,#674cff 60%,#bd39ed);box-shadow:0 10px 35px #604cff55}.primary:hover{box-shadow:0 15px 45px #604cff88}
+    .secondary{border:1px solid #ffffff28;background:#ffffff08;color:#eef0ff}.fine{font-size:12px;color:#8289a6;margin-top:17px}.fine code{color:#c8cdf0}
+    .visual{position:relative;min-height:450px;display:grid;place-items:center;perspective:1000px}
+    .orbit{position:absolute;width:min(440px,90vw);aspect-ratio:1;border:1px solid #7c8cff22;border-radius:50%;animation:rotate 32s linear infinite}
+    .orbit:before,.orbit:after{content:"";position:absolute;border:1px solid #7c8cff18;border-radius:50%;inset:35px}
+    .orbit:after{inset:75px;border-color:#27ddff23}
+    .planet{position:absolute;width:9px;height:9px;border-radius:50%;background:#57e1ff;box-shadow:0 0 20px #57e1ff;top:36px;left:70px}
+    .logo-card{width:min(355px,83vw);aspect-ratio:1;border:1px solid #ffffff24;border-radius:38px;background:linear-gradient(145deg,#ffffff12,#ffffff04);backdrop-filter:blur(18px);box-shadow:0 35px 90px #0009,0 0 80px #483bff35;display:grid;place-items:center;position:relative;transform:rotateY(-9deg) rotateX(4deg);animation:float 5s ease-in-out infinite;overflow:hidden}
+    .logo-card:before{content:"";position:absolute;inset:-1px;background:linear-gradient(135deg,#3dcfff55,transparent 42%,#ca51ff3c);opacity:.55}
+    .logo-card img{width:91%;height:91%;object-fit:contain;position:relative;filter:drop-shadow(0 18px 28px #090b1c)}
+    .float-chip{position:absolute;display:flex;align-items:center;gap:9px;padding:12px 15px;border-radius:14px;background:#161a30e8;border:1px solid #ffffff25;box-shadow:0 15px 45px #0007;font:600 12px "Space Grotesk",sans-serif;animation:float 4s ease-in-out infinite}
+    .chip-run{left:0;bottom:63px}.chip-python{right:-5px;top:70px;animation-delay:-1.7s}.chip-dot{width:8px;height:8px;border-radius:50%;background:#39e9b1;box-shadow:0 0 12px #39e9b1}
+    .section{padding:94px 0}.section-head{text-align:center;max-width:700px;margin:0 auto 46px}.kicker{color:#69dfff;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.7px}.section h2{font:700 clamp(32px,4vw,48px)/1.1 "Space Grotesk",sans-serif;letter-spacing:-2px;margin:13px 0}.section-head p{color:var(--muted);line-height:1.7;margin:0}
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.feature{padding:25px;border-radius:20px;background:linear-gradient(145deg,#171b33,#101323);border:1px solid var(--line);transition:transform .28s,border-color .28s}.feature:hover{transform:translateY(-6px);border-color:#7b85ff66}
+    .icon{height:45px;width:45px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(145deg,#4bcfff2e,#ad4fff22);color:#7fe8ff;font-size:21px}.feature h3{font:600 18px "Space Grotesk",sans-serif;margin:20px 0 8px}.feature p{color:#9da4bd;line-height:1.65;font-size:14px;margin:0}
+    .showcase{display:grid;grid-template-columns:1fr 1fr;gap:58px;align-items:center}.editor{border:1px solid #ffffff20;border-radius:20px;background:#0d1020;box-shadow:0 35px 90px #0008;overflow:hidden;transform:rotateY(5deg);transition:transform .5s}.editor:hover{transform:rotateY(0) translateY(-5px)}
+    .editor-top{height:44px;display:flex;align-items:center;gap:7px;padding:0 15px;background:#171a2a;border-bottom:1px solid #ffffff12}.window-dot{width:9px;height:9px;border-radius:50%;background:#ff657b}.window-dot:nth-child(2){background:#ffc75f}.window-dot:nth-child(3){background:#40d99e}.tab{margin-left:12px;color:#b8c6f5;font-size:12px}
+    .code{padding:25px 23px;color:#d9def5;font:13px/1.9 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre;overflow:auto}.ln{color:#626b8b;display:inline-block;width:28px}.kw{color:#c58bff}.fn{color:#69d9ff}.str{color:#93e6a4}.num{color:#ffbd75}
+    .showcopy h2{font:700 38px/1.12 "Space Grotesk",sans-serif;letter-spacing:-1.8px;margin:14px 0}.showcopy p{color:#a4abc4;line-height:1.8}.checks{list-style:none;padding:0;margin:24px 0}.checks li{margin:13px 0;color:#d9def5}.checks li:before{content:"✓";color:#45e3bb;font-weight:700;margin-right:11px}
+    .download{padding:40px;border:1px solid #8c82ff45;border-radius:28px;background:radial-gradient(ellipse at 20% 0%,#435cff29,transparent 50%),linear-gradient(140deg,#15182d,#101222);display:flex;align-items:center;justify-content:space-between;gap:24px;box-shadow:0 25px 75px #0005}
+    .download h2{font:700 33px "Space Grotesk",sans-serif;letter-spacing:-1.4px;margin:0 0 8px}.download p{color:#a2a9c3;margin:0;line-height:1.65}.download .btn{white-space:nowrap}
+    .verify{margin-top:18px;padding:23px;border:1px solid var(--line);border-radius:18px;background:#ffffff05}.verify-head{display:flex;justify-content:space-between;gap:15px;align-items:center}.verify h3{font:600 15px "Space Grotesk",sans-serif;margin:0}.verify p{font-size:12px;line-height:1.6;color:#969db8;margin:8px 0 14px}.hash{display:block;overflow-wrap:anywhere;color:#8be5ff;font:11px/1.7 ui-monospace,monospace;padding:11px 12px;border-radius:10px;background:#060814;border:1px solid #ffffff12}
+    .verify-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:13px}.small-btn{padding:9px 12px;border-radius:10px;background:#ffffff0b;border:1px solid #ffffff22;color:#e6e9fa;font-size:12px;cursor:pointer}.small-btn:hover{border-color:#7a89ff}.status{font-size:12px;margin-top:11px;min-height:18px;color:#a4abc4}.status.ok{color:#50e0a7}.status.bad{color:#ff7585}
+    footer{border-top:1px solid var(--line);padding:27px 0;color:#878eaa;font-size:12px}.foot{display:flex;justify-content:space-between;gap:20px;align-items:center}.foot strong{color:#dce1f6}
+    .reveal{opacity:0;transform:translateY(22px);transition:opacity .75s ease,transform .75s ease}.reveal.visible{opacity:1;transform:none}
+    @keyframes float{0%,100%{translate:0 0}50%{translate:0 -13px}}@keyframes rotate{to{transform:rotate(360deg)}}@keyframes breathe{0%,100%{opacity:.55;scale:.92}50%{opacity:.9;scale:1.08}}@keyframes blink{50%{opacity:.35;box-shadow:0 0 2px #43f2c7}}
+    @media(max-width:850px){.hero{grid-template-columns:1fr;text-align:center;padding-top:65px}.hero-copy{display:flex;flex-direction:column;align-items:center}.visual{min-height:400px}.features{grid-template-columns:repeat(2,1fr)}.showcase{grid-template-columns:1fr;gap:34px}.showcopy{order:-1}.download{align-items:flex-start;flex-direction:column}.download .btn{width:100%}}
+    @media(max-width:560px){.wrap{width:min(100% - 28px,1160px)}.nav{height:68px}.brand{font-size:15px}.brand img{width:35px;height:35px}.navlinks{display:none}.nav-cta{padding:9px 12px;font-size:12px}.hero{padding:57px 0 55px;min-height:0}h1{letter-spacing:-3px}.lead{font-size:15px}.visual{min-height:335px}.logo-card{width:min(280px,78vw);border-radius:29px}.orbit{width:min(340px,96vw)}.chip-run{left:-3px;bottom:28px}.chip-python{right:-4px;top:35px}.section{padding:65px 0}.features{grid-template-columns:1fr}.feature{padding:21px}.code{font-size:11px;padding:19px 14px}.showcopy h2{font-size:31px}.download{padding:26px 20px}.download h2{font-size:27px}.verify-head{align-items:flex-start;flex-direction:column}.foot{align-items:flex-start;flex-direction:column}.actions{width:100%}.actions .btn{flex:1}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.reveal{opacity:1;transform:none}}
+  </style>
+</head>
+<body>
+<div class="grain"></div>
+<header class="wrap nav">
+  <a class="brand" href="#baslangic"><img src="https://uploads.onecompiler.io/44fx9epuv/1792876807498/899f1d72-eb71-417a-941a-2a9d398b75cd.png" alt=""><span>Wenitor <span style="color:#65dfff">Runner</span></span></a>
+  <nav class="navlinks" aria-label="Ana menü"><a href="#ozellikler">Özellikler</a><a href="#editor">Editör</a><a href="#indir">İndir</a></nav>
+  <a class="nav-cta" href="#indir">Windows için indir ↗</a>
+</header>
+<main>
+  <section id="baslangic" class="wrap hero">
+    <div class="hero-copy">
+      <div class="eyebrow"><span class="pulse"></span> Windows için Python IDE</div>
+      <h1>Kodla.<span>Çalıştır.</span><span>Üret.</span></h1>
+      <p class="lead">Python projelerin için güçlü bir çalışma alanı. Kod editörü, gerçek Python çalıştırıcısı ve terminal; hepsi Wenitor'un modern arayüzünde.</p>
+      <div class="actions">
+        <a class="btn primary" href="https://github.com/burakdevv/WenitorRunnerPython/releases/download/NewReleaseOne/WRPsetup.exe" download>↓&nbsp; WRPsetup.exe indir</a>
+        <a class="btn secondary" href="#ozellikler">Keşfet&nbsp; ↓</a>
+      </div>
+      <div class="fine">Windows 10 / 11 · Kurulum dosyası: <code>WRPsetup.exe</code></div>
+    </div>
+    <div class="visual" aria-label="Wenitor logosu">
+      <div class="orbit"><span class="planet"></span></div>
+      <div class="logo-card"><img src="https://uploads.onecompiler.io/44fx9epuv/1792876807498/899f1d72-eb71-417a-941a-2a9d398b75cd.png" alt="Wenitor Python Runner logosu"></div>
+      <div class="float-chip chip-run"><span class="chip-dot"></span> Python süreci çalışıyor</div>
+      <div class="float-chip chip-python">🐍 &nbsp;Python Runner</div>
+    </div>
+  </section>
+  <section id="ozellikler" class="wrap section reveal">
+    <div class="section-head"><span class="kicker">Geliştirme alanın</span><h2>İhtiyacın olan her şey.<br>Tek bir akışta.</h2><p>Fikirden çalışan Python koduna kadar, günlük geliştirme araçlarını sade ve odaklı bir arayüzde buluştur.</p></div>
+    <div class="features">
+      <article class="feature"><div class="icon">⌘</div><h3>Akıllı kod editörü</h3><p>Python renklendirme, satır numaraları, otomatik girinti ve sekmelerle kodunu düzenli tut.</p></article>
+      <article class="feature"><div class="icon">▶</div><h3>Gerçek Python Runner</h3><p>Kodunu ayrı Python sürecinde başlat, çalışmayı durdur ve gerçek program çıktısını gör.</p></article>
+      <article class="feature"><div class="icon">▤</div><h3>Entegre terminal</h3><p>Program çıktısı ve hata mesajlarını aynı çalışma alanında takip et.</p></article>
+      <article class="feature"><div class="icon">⌕</div><h3>Proje gezgini</h3><p>Dosyalarını aç, kaydet ve Python proje klasöründe rahatça gezin.</p></article>
+      <article class="feature"><div class="icon">◉</div><h3>Hata ayıklama</h3><p>Breakpoint desteğiyle kod akışını incele ve sorunları daha hızlı bul.</p></article>
+      <article class="feature"><div class="icon">＋</div><h3>Python paketleri</h3><p>pip paketlerini yönet, otomatik tamamlama ile kod yazarken önerilerden yararlan.</p></article>
+    </div>
+  </section>
+  <section id="editor" class="wrap section showcase reveal">
+    <div class="editor" aria-label="Kod editörü örneği">
+      <div class="editor-top"><span class="window-dot"></span><span class="window-dot"></span><span class="window-dot"></span><span class="tab">hello_wenitor.py</span></div>
+      <div class="code"><span class="ln">1</span><span class="kw">from</span> datetime <span class="kw">import</span> datetime
+<span class="ln">2</span>
+<span class="ln">3</span><span class="kw">def</span> <span class="fn">baslat</span>():
+<span class="ln">4</span>    mesaj = <span class="str">"Merhaba, Wenitor!"</span>
+<span class="ln">5</span>    print(mesaj)
+<span class="ln">6</span>    print(<span class="str">f"Şu an: {datetime.now():%H:%M:%S}"</span>)
+<span class="ln">7</span>
+<span class="ln">8</span><span class="kw">if</span> __name__ == <span class="str">"__main__"</span>:
+<span class="ln">9</span>    baslat()</div>
+    </div>
+    <div class="showcopy"><span class="kicker">Akışını bölme</span><h2>Yaz. Çalıştır.<br>Sonucu gör.</h2><p>Wenitor, kodunla çalıştırma çıktısı arasındaki mesafeyi kısaltır. Dosyanı aç, Python kodunu düzenle ve sonucu terminal panelinde izle.</p><ul class="checks"><li>Çoklu dosya sekmeleri</li><li>Çalıştır ve durdur kontrolleri</li><li>Hata çıktısını kolayca inceleme</li><li>Python dosyaları için proje gezgini</li></ul><a class="btn secondary" href="#indir">Wenitor'u edin&nbsp; ↗</a></div>
+  </section>
+  <section id="indir" class="wrap section reveal">
+    <div class="download">
+      <div><span class="kicker">Windows sürümü</span><h2>Python projene başla.</h2><p>Wenitor Python Runner kurulum dosyasını GitHub Releases üzerinden indir.</p></div>
+      <a class="btn primary" href="https://github.com/burakdevv/WenitorRunnerPython/releases/download/NewReleaseOne/WRPsetup.exe" download>↓&nbsp; WRPsetup.exe indir</a>
+    </div>
+    <div class="verify">
+      <div class="verify-head"><h3>🔐 İndirme dosyasını doğrula</h3><button id="copyHash" class="small-btn" type="button">SHA-256 değerini kopyala</button></div>
+      <p>İndirdiğin WRPsetup.exe dosyasını seç. Tarayıcı SHA-256 özetini hesaplayıp yayımlanan değerle karşılaştırsın.</p>
+      <span class="hash" id="expected">067ca843647bee1a913079e8cf6ac1d947b772a7d31b012ea271220f0162a119</span>
+      <div class="verify-actions"><label class="small-btn" for="fileInput">WRPsetup.exe dosyasını seç</label><input id="fileInput" type="file" accept=".exe,application/vnd.microsoft.portable-executable" hidden><button id="verifyBtn" class="small-btn" type="button" disabled>SHA-256 doğrula</button></div>
+      <div id="status" class="status" role="status" aria-live="polite">Dosyanı seçerek doğrulamayı başlat.</div>
+    </div>
+  </section>
+</main>
+<footer><div class="wrap foot"><strong>Wenitor Runner Python</strong><span>Python geliştirme akışın için. · <a href="https://github.com/burakdevv/WenitorRunnerPython">GitHub deposu ↗</a></span></div></footer>
+<script>
+  const expectedHash = "067ca843647bee1a913079e8cf6ac1d947b772a7d31b012ea271220f0162a119";
+  const input = document.getElementById("fileInput");
+  const verifyButton = document.getElementById("verifyBtn");
+  const statusBox = document.getElementById("status");
+  let selectedFile = null;
+  input.addEventListener("change", () => {
+    selectedFile = input.files && input.files[0] ? input.files[0] : null;
+    verifyButton.disabled = !selectedFile;
+    statusBox.className = "status";
+    statusBox.textContent = selectedFile ? selectedFile.name + " seçildi. SHA-256 doğrulamaya hazır." : "Dosyanı seçerek doğrulamayı başlat.";
+  });
+  verifyButton.addEventListener("click", async () => {
+    if (!selectedFile) return;
+    if (!crypto.subtle) {
+      statusBox.className = "status bad";
+      statusBox.textContent = "Tarayıcı SHA-256 doğrulamasını desteklemiyor. Güncel bir tarayıcıda açıp tekrar dene.";
+      return;
+    }
+    verifyButton.disabled = true;
+    statusBox.className = "status";
+    statusBox.textContent = "Dosya özeti hesaplanıyor…";
+    try {
+      const digest = await crypto.subtle.digest("SHA-256", await selectedFile.arrayBuffer());
+      const actualHash = Array.from(new Uint8Array(digest), b => b.toString(16).padStart(2, "0")).join("");
+      if (actualHash === expectedHash) {
+        statusBox.className = "status ok";
+        statusBox.textContent = "Doğrulandı ✓ Dosyanın SHA-256 değeri eşleşiyor: " + actualHash;
+      } else {
+        statusBox.className = "status bad";
+        statusBox.textContent = "Eşleşmedi! Beklenen: " + expectedHash + " · Dosyanın değeri: " + actualHash;
+      }
+    } catch (error) {
+      statusBox.className = "status bad";
+      statusBox.textContent = "Dosya okunamadı: " + error.message;
+    } finally {
+      verifyButton.disabled = !selectedFile;
+    }
+  });
+  document.getElementById("copyHash").addEventListener("click", async event => {
+    try {
+      await navigator.clipboard.writeText(expectedHash);
+      event.currentTarget.textContent = "Kopyalandı ✓";
+      setTimeout(() => event.currentTarget.textContent = "SHA-256 değerini kopyala", 1800);
+    } catch {
+      statusBox.textContent = "Kopyalama engellendi; hash değerini seçip elle kopyalayabilirsin.";
+    }
+  });
+  const observer = new IntersectionObserver(entries => entries.forEach(entry => {
+    if (entry.isIntersecting) { entry.target.classList.add("visible"); observer.unobserve(entry.target); }
+  }), { threshold: .12 });
+  document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
