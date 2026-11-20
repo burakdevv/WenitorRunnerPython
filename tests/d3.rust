@@ -1,82 +1,191 @@
-d3.rustd3.rust
-d3.rust
-d3.rust
-d3.rust
-d3.rust
-d3.rust
-d3.rust
-d3.rust
+use std::io::{self, Write};
+use std::thread;
+use std::time::Duration;
 
-d3.rust
-d3.rust
-d3.rust
-d3.rust
-d3.rust
-d3.rust
-d3.rust
+// ANSI Renk ve Kontrol Kodları
+const RESET: &str = "\x1b[0m";
+const CLEAR_SCREEN: &str = "\x1b[2J\x1b[1;1H";
+const HIDE_CURSOR: &str = "\x1b[?25l";
+const SHOW_CURSOR: &str = "\x1b[?25h";
+const BOLD: &str = "\x1b[1m";
 
-d3.rust
-d3.rust
-d3.rust
-d3.rust
+// Gökkuşağı renk paleti (ANSI kodları)
+const COLORS: [&str; 6] = [
+    "\x1b[31m", // Kırmızı
+    "\x1b[33m", // Sarı
+    "\x1b[32m", // Yeşil
+    "\x1b[36m", // Camgöbeği (Cyan)
+    "\x1b[34m", // Mavi
+    "\x1b[35m", // Mor (Magenta)
+];
 
-d3.rust
-d3.rust
-d3.rust
-d3.rust
-d3.rust
+// Harflerin 5 satırlık ASCII şablonları
+fn get_letter_art(ch: char) -> [&'static str; 5] {
+    match ch {
+        'M' => [
+            "███╗   ███╗",
+            "████╗ ████║",
+            "██╔████╔██║",
+            "██║╚██╔╝██║",
+            "██║ ╚═╝ ██║",
+        ],
+        'E' => [
+            "███████╗",
+            "██╔════╝",
+            "█████╗  ",
+            "██╔══╝  ",
+            "███████╗",
+        ],
+        'R' => [
+            "██████╗ ",
+            "██╔══██╗",
+            "██████╔╝",
+            "██╔══██╗",
+            "██║  ██║",
+        ],
+        'H' => [
+            "██╗  ██╗",
+            "██║  ██║",
+            "███████║",
+            "██╔══██║",
+            "██║  ██║",
+        ],
+        'A' => [
+            " █████╗ ",
+            "██╔══██╗",
+            "███████║",
+            "██╔══██║",
+            "██║  ██║",
+        ],
+        'B' => [
+            "██████╗ ",
+            "██╔══██╗",
+            "██████╔╝",
+            "██╔══██╗",
+            "██████╔╝",
+        ],
+        '!' => [
+            "██╗",
+            "██║",
+            "██║",
+            "╚═╝",
+            "██╗",
+        ],
+        _ => [
+            "     ",
+            "     ",
+            "     ",
+            "     ",
+            "     ",
+        ],
+    }
+}
 
-d3.rust
-d3.rust
-d3.rust
-d3.rust
-d3.rust
+// Terminal ekranını temizleyip imleci başa alır
+fn clear_terminal() {
+    print!("{}", CLEAR_SCREEN);
+    io::stdout().flush().unwrap();
+}
 
+// 1. AŞAMA: Harflerin soldan sağa daktilo gibi belirme animasyonu
+fn typewriter_intro(word: &str) {
+    let chars: Vec<char> = word.chars().collect();
+    
+    for count in 1..=chars.len() {
+        clear_terminal();
+        println!("\n\n");
+        
+        for row in 0..5 {
+            print!("   "); // Sol boşluk
+            for i in 0..count {
+                let art = get_letter_art(chars[i]);
+                let color = COLORS[i % COLORS.len()];
+                print!("{}{}{}{} ", BOLD, color, art[row], RESET);
+            }
+            println!();
+        }
+        
+        io::stdout().flush().unwrap();
+        thread::sleep(Duration::from_millis(180));
+    }
+}
 
+// 2. AŞAMA: Harflerin yukarı-aşağı dalgalanması ve renk değiştirmesi
+fn wave_and_color_loop(word: &str, frames: usize) {
+    let chars: Vec<char> = word.chars().collect();
+    // Toplam 8 satırlık bir tuval (5 satır harf + 3 satır dalga payı)
+    let canvas_height = 8;
 
+    for frame in 0..frames {
+        clear_terminal();
+        println!("\n");
 
+        // Her harf için o anki dikey kayma (offset) değerini hesapla (0, 1, 2 veya 3)
+        let mut offsets = Vec::with_capacity(chars.len());
+        for i in 0..chars.len() {
+            let wave = ((frame + i) % 6) as isize;
+            let offset = match wave {
+                0 => 2,
+                1 => 1,
+                2 => 0,
+                3 => 1,
+                4 => 2,
+                _ => 3,
+            };
+            offsets.push(offset as usize);
+        }
 
+        // Tuvali satır satır çiz
+        for canvas_row in 0..canvas_height {
+            print!("   ");
+            for (i, &ch) in chars.iter().enumerate() {
+                let art = get_letter_art(ch);
+                let offset = offsets[i];
+                let color = COLORS[(frame + i) % COLORS.len()];
 
+                // Eğer bu satır harfin çizileceği aralığa denk geliyorsa harfin ilgili satırını bas
+                if canvas_row >= offset && canvas_row < offset + 5 {
+                    let letter_row = canvas_row - offset;
+                    print!("{}{}{}{} ", BOLD, color, art[letter_row], RESET);
+                } else {
+                    // Boşluk bırak (harfin genişliği kadar)
+                    let empty_space = " ".repeat(art[0].chars().count());
+                    print!("{} ", empty_space);
+                }
+            }
+            println!();
+        }
 
+        // Alt kısma yükleme / süsleme çubuğu ekle
+        println!("\n   {}~ Rust Dünyasına Hoş Geldiniz! (Kare: {}/{}) ~{}", 
+            COLORS[frame % COLORS.len()], frame + 1, frames, RESET);
 
+        io::stdout().flush().unwrap();
+        thread::sleep(Duration::from_millis(100));
+    }
+}
 
+// 3. AŞAMA: Kapanış ve imleci geri getirme
+fn outro_message() {
+    println!("\n   {}Animasyon tamamlandı! İyi kodlamalar.{}", BOLD, RESET);
+    print!("{}", SHOW_CURSOR);
+    io::stdout().flush().unwrap();
+}
 
+fn main() {
+    let message = "MERHABA!";
 
+    // İmleci gizle ki animasyon sırasında titreme olmasın
+    print!("{}", HIDE_CURSOR);
+    io::stdout().flush().unwrap();
 
+    // 1. Adım: Harfleri tek tek ekrana getir
+    typewriter_intro(message);
+    thread::sleep(Duration::from_millis(400));
 
+    // 2. Adım: 50 kare boyunca dalgalanma ve gökkuşağı efekti yap
+    wave_and_color_loop(message, 50);
 
-
-
-
-
-
-
-
-
-
-
-
-
-d3.rust
-d3.rust
-d3.rust
-d3.rust
-
-d3.rust
-d3.rust
-d3.rust
-d3.rust
-d3.rust
-d3.rust
-d3.rust
-d3.rust
-d3.rust
-d3.rust
-d3.rust
-
-d3.rust
-d3.rust
-d3.rust
-d3.rust
-d3.rust
-d3.rust
+    // 3. Adım: Temiz kapanış
+    outro_message();
+}
